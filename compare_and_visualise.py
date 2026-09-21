@@ -8,7 +8,7 @@ from sorts import quick_sort, merge_sort
 # This script compares the performance of quicksort and mergesort algorithms on random data and visualizes the results.
 # AI has been used to write some of the code for this script, but it has been reviewed and modified by me to ensure accuracy and clarity.
 
-size = [500, 1000, 2000]
+size = [500, 1000, 2000, 4000]
 types = ["random", "sorted", "reverse"]
 algorithms = {
     "Mergesort": merge_sort,
@@ -55,3 +55,19 @@ for type in types:
             times[(type, name)].append(measure_time(sort_func, data))
             memory[(type, name)].append(measure_memory(sort_func, data))
             print(type, name, n, "done")
+
+
+# Plotting the results
+fig, axes = plt.subplots(2, 3, figsize=(15, 8))
+for col, kind in enumerate(types):
+    for name in algorithms:
+        axes[0][col].plot(size, times[(kind, name)], marker="o", label=name)
+        axes[1][col].plot(size, memory[(kind, name)], marker="o", label=name)
+    axes[0][col].set_title(type)
+    axes[0][col].set_ylabel("time (seconds)")
+    axes[1][col].set_ylabel("peak extra memory (KiB)")
+    axes[1][col].set_xlabel("n (number of elements)")
+axes[0][0].legend()
+plt.tight_layout()
+plt.savefig("results.png", dpi=150)
+plt.show()
